@@ -7,4 +7,7 @@ dependencies {
     implementation("org.springframework:spring-web")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("io.projectreactor.netty:reactor-netty")
+
+    compileOnly("org.projectlombok:lombok:1.18.48")
+    annotationProcessor("org.projectlombok:lombok:1.18.48")
 }

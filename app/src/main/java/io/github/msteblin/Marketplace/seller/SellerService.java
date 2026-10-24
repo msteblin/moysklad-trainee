@@ -49,12 +49,12 @@ public class SellerService {
     public List<Product> getGoods(UUID sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("seller id=" + sellerId));
-        return apiClient.getProducts(seller.getMsToken());
+        return apiClient.products.getAll(seller.getMsToken());
     }
 
     public Product getGood(UUID sellerId, UUID goodId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("seller id=" + sellerId));
-        return apiClient.getProduct(seller.getMsToken(), goodId);
+        return apiClient.products.get(seller.getMsToken(), goodId);
     }
 }

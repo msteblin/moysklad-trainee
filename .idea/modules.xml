@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/moysklad-trainee.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/moysklad-trainee.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/moysklad-trainee.client.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/moysklad-trainee.client.main.iml" />
     </modules>
   </component>
 </project>
