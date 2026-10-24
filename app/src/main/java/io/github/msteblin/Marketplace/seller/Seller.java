@@ -2,6 +2,8 @@ package io.github.msteblin.Marketplace.seller;
 
 import io.github.msteblin.Marketplace.account.Account;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.jspecify.annotations.NonNull;
@@ -10,6 +12,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "sellers")
+@Getter
+@Setter
 @SuppressWarnings("unused")
 public class Seller {
     @Id
@@ -33,22 +37,6 @@ public class Seller {
     public Seller(@NonNull Account account, @NonNull String msToken) {
         this.id = new UUID(0, 0);
         this.account = account;
-        this.msToken = msToken;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public @NonNull Account getAccount() {
-        return account;
-    }
-
-    public @NonNull String getMsToken() {
-        return msToken;
-    }
-
-    public void setMsToken(@NonNull String msToken) {
         this.msToken = msToken;
     }
 }

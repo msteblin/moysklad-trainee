@@ -1,12 +1,16 @@
 package io.github.msteblin.Marketplace.account;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "accounts")
+@Getter
+@Setter
 @SuppressWarnings("unused")
 public class Account {
     @Id
@@ -34,30 +38,6 @@ public class Account {
     public Account(@NonNull String login, @NonNull String hash) {
         this.id = new UUID(0, 0);
         this.login = login;
-        this.hash = hash;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public @NonNull String getLogin() {
-        return login;
-    }
-
-    public void setLogin(@NonNull String login) {
-        this.login = login;
-    }
-
-    public @NonNull String getHash() {
-        return hash;
-    }
-
-    public void setHash(@NonNull String hash) {
         this.hash = hash;
     }
 }
