@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = "moysklad-trainee"
-include("app", "api-wrapper")
+include("app", "client")
