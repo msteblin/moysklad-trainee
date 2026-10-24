@@ -36,6 +36,8 @@ public class SellerServiceIntegrationTest {
     public void createSeller() {
         final String token = "token";
         Account account = new Account();
+        account.setLogin("test");
+        account.setHash("test");
         account = accountRepository.saveAndFlush(account);
 
         sellerService.createSeller(new SellerCreationDTO(account.getId(), token));
