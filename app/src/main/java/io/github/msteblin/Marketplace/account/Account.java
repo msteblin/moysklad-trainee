@@ -1,8 +1,7 @@
 package io.github.msteblin.Marketplace.account;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
@@ -11,6 +10,9 @@ import java.util.UUID;
 @Table(name = "accounts")
 @Getter
 @Setter
+@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
+@AllArgsConstructor
 @SuppressWarnings("unused")
 public class Account {
     @Id
@@ -23,21 +25,9 @@ public class Account {
     @NonNull
     private String hash;
 
-    public Account() {
-        this.id = new UUID(0, 0);
-        this.login = "";
-        this.hash = "";
-    }
-
     public Account(UUID id) {
         this.id = id;
         this.login = "";
         this.hash = "";
-    }
-
-    public Account(@NonNull String login, @NonNull String hash) {
-        this.id = new UUID(0, 0);
-        this.login = login;
-        this.hash = hash;
     }
 }
