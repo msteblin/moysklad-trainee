@@ -14,18 +14,18 @@ public class ProductAPI {
     @NonNull
     private final Core core;
 
-    public List<Product> getAll(String token) {
+    public List<Product> getAll() {
         Rows<Product> rows = core.restClient.get().uri("/entity/product")
-                .headers(h -> h.setBearerAuth(token))
+                .headers(h -> h.setBearerAuth(core.msToken))
                 .retrieve()
                 .body(new ParameterizedTypeReference<Rows<Product>>() {});
         assert rows != null;
         return rows.rows();
     }
 
-    public Product get(String token, UUID id) {
+    public Product get(UUID id) {
         return core.restClient.get().uri("/entity/product/" + id.toString())
-                .headers(h -> h.setBearerAuth(token))
+                .headers(h -> h.setBearerAuth(core.msToken))
                 .retrieve()
                 .body(new ParameterizedTypeReference<Product>() {});
     }

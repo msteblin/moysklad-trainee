@@ -6,6 +6,7 @@ import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
 import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
 import io.github.msteblin.MoySkladAPI.APIClient;
 import io.github.msteblin.MoySkladAPI.types.Product;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class SellerService {
 
     @Autowired
     @SuppressWarnings("unused")
-    private APIClient apiClient;
+    private ObjectProvider<APIClient> apiProvider;
 
     // TODO: create an account automatically
     @Transactional
@@ -49,12 +50,12 @@ public class SellerService {
     public List<Product> getGoods(UUID sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("seller id=" + sellerId));
-        return apiClient.products.getAll(seller.getMsToken());
+        return apiProvider.getObject(seller.getMsToken()).products.getAll();
     }
 
     public Product getGood(UUID sellerId, UUID goodId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("seller id=" + sellerId));
-        return apiClient.products.get(seller.getMsToken(), goodId);
+        return apiProvider.getObject(seller.getMsToken()).products.get(goodId);
     }
 }
