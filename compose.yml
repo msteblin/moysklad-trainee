@@ -18,7 +18,10 @@ services:
       - 8080:8080
     depends_on:
       - db
+    volumes:
+      - logs:/var/log/moysklad-trainee
     build: .
 
 volumes:
   db:
+  logs:

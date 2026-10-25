@@ -9,9 +9,10 @@ $ docker compose build
 > [!IMPORTANT]
 > Перед запуском необходимо создать файл `.env` в корне проекта:
 > ```dotenv
-> POSTGRES_DB=database
-> POSTGRES_USER=username
-> POSTGRES_PASSWORD=password
+> POSTGRES_DB=database        # название бд
+> POSTGRES_USER=username      # имя пользователя
+> POSTGRES_PASSWORD=password  # пароль
+> SPRING_PROFILES_ACTIVE=prod # профиль Spring (dev или prod, по умолчанию prod)
 > ```
 ```shell
 $ docker compose up
