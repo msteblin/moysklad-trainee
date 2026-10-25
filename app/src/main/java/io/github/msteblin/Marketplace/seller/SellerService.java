@@ -32,6 +32,7 @@ public class SellerService {
         // TODO: add token encryption
         Seller seller = new Seller(new Account(sellerCreationDTO.accountId()), sellerCreationDTO.msToken());
         Seller savedSeller = sellerRepository.save(seller);
+        log.debug("Seller: {}, saved seller: {}", seller, savedSeller);
         log.info("Created seller, id={}", savedSeller.getId());
         return SellerDTO.fromSeller(savedSeller);
     }
@@ -42,14 +43,15 @@ public class SellerService {
         Seller seller = sellerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("seller id=" + id));
         // TODO: add request id
-        log.info("Returned seller, id={}", seller.getId());
+        log.debug("Seller: {}", seller);
+        log.info("Returning seller, id={}", seller.getId());
         return SellerDTO.fromSeller(seller);
     }
 
     @Transactional
     public void deleteSeller(UUID id) {
+        log.info("Deleting seller, id={}", id);
         sellerRepository.deleteById(id);
-        log.info("Deleted seller, id={}", id);
     }
 
     // TODO: refactor goods -> products
@@ -57,7 +59,8 @@ public class SellerService {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("seller id=" + sellerId));
         List<Product> goods = apiProvider.getObject(seller.getMsToken()).products.getAll();
-        log.info("Returned {} good(s) of seller, id={}", goods.size(), seller.getId());
+        log.debug("Seller: {}, goods: {}", seller, goods);
+        log.info("Returning {} good(s) of seller, id={}", goods.size(), seller.getId());
         return goods;
     }
 
@@ -65,7 +68,8 @@ public class SellerService {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new NotFoundException("seller id=" + sellerId));
         Product good = apiProvider.getObject(seller.getMsToken()).products.get(goodId);
-        log.info("Returned good of seller, good id={}, seller id={}", good.id(), seller.getId());
+        log.debug("Seller: {}, good: {}", seller, good);
+        log.info("Returning good of seller, good id={}, seller id={}", good.id(), seller.getId());
         return good;
     }
 }

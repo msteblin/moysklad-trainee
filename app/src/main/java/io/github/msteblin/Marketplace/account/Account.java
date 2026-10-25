@@ -2,7 +2,6 @@ package io.github.msteblin.Marketplace.account;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
@@ -10,6 +9,7 @@ import java.util.UUID;
 @Table(name = "accounts")
 @Getter
 @Setter
+@ToString(exclude = {"hash"})
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @AllArgsConstructor

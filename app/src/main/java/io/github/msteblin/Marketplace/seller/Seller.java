@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
@@ -13,6 +12,7 @@ import java.util.UUID;
 @Table(name = "sellers")
 @Getter
 @Setter
+@ToString(exclude = {"account", "msToken"})
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne(optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @NonNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final Account account;

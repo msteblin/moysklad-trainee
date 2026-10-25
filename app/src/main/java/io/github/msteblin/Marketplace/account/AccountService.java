@@ -26,6 +26,7 @@ public class AccountService {
     public AccountDTO createAccount(AccountCreationDTO accountCreationDTO) {
         Account account = new Account(accountCreationDTO.login(), passwordEncoder.encode(accountCreationDTO.password()));
         Account savedAccount = accountRepository.save(account);
+        log.debug("Account: {}, saved account: {}", account, savedAccount);
         log.info("Created account, id={}", savedAccount.getId());
         return AccountDTO.fromAccount(savedAccount);
     }
@@ -34,13 +35,14 @@ public class AccountService {
     public AccountDTO getAccount(UUID id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("account id=" + id));
-        log.info("Returned account, id={}", account.getId());
+        log.debug("Account: {}", account);
+        log.info("Returning account, id={}", account.getId());
         return AccountDTO.fromAccount(account);
     }
 
     @Transactional
     public void deleteAccount(UUID id) {
+        log.info("Deleting account, id={}", id);
         accountRepository.deleteById(id);
-        log.info("Deleted account, id={}", id);
     }
 }
