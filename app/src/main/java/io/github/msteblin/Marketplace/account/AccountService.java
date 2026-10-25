@@ -25,40 +25,25 @@ public class AccountService {
 
     @Transactional
     public AccountDTO createAccount(AccountCreationDTO accountCreationDTO) {
-        MDC.put("requestId", UUID.randomUUID().toString());
-        try {
-            Account account = new Account(accountCreationDTO.login(), passwordEncoder.encode(accountCreationDTO.password()));
-            Account savedAccount = accountRepository.save(account);
-            log.debug("Account: {}, saved account: {}", account, savedAccount);
-            log.info("Created account, id={}", savedAccount.getId());
-            return AccountDTO.fromAccount(savedAccount);
-        } finally {
-            MDC.clear();
-        }
+        Account account = new Account(accountCreationDTO.login(), passwordEncoder.encode(accountCreationDTO.password()));
+        Account savedAccount = accountRepository.save(account);
+        log.debug("Account: {}, saved account: {}", account, savedAccount);
+        log.info("Created account, id={}", savedAccount.getId());
+        return AccountDTO.fromAccount(savedAccount);
     }
 
     @Transactional
     public AccountDTO getAccount(UUID id) {
-        MDC.put("requestId", UUID.randomUUID().toString());
-        try {
-            Account account = accountRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException("account id=" + id));
-            log.debug("Account: {}", account);
-            log.info("Returning account, id={}", account.getId());
-            return AccountDTO.fromAccount(account);
-        } finally {
-            MDC.clear();
-        }
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("account id=" + id));
+        log.debug("Account: {}", account);
+        log.info("Returning account, id={}", account.getId());
+        return AccountDTO.fromAccount(account);
     }
 
     @Transactional
     public void deleteAccount(UUID id) {
-        MDC.put("requestId", UUID.randomUUID().toString());
-        try {
-            log.info("Deleting account, id={}", id);
-            accountRepository.deleteById(id);
-        } finally {
-            MDC.clear();
-        }
+        log.info("Deleting account, id={}", id);
+        accountRepository.deleteById(id);
     }
 }
