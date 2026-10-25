@@ -29,6 +29,12 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+// fixes "Class path contains multiple SLF4J providers" runtime error
+configurations.configureEach {
+    exclude(group = "org.apache.logging.log4j", module = "log4j-slf4j2-impl")
+    exclude(group = "org.apache.logging.log4j", module = "log4j-slf4j-impl")
+}
+
 application {
     mainClass = "io.github.msteblin.Marketplace.App"
 }
