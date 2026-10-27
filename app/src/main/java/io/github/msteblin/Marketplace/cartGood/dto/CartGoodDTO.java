@@ -1,9 +1,7 @@
 package io.github.msteblin.Marketplace.cartGood.dto;
 
 import io.github.msteblin.Marketplace.cartGood.CartGood;
-import io.github.msteblin.Marketplace.customer.Customer;
 import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
-import io.github.msteblin.Marketplace.seller.Seller;
 import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
 
 import java.time.OffsetDateTime;

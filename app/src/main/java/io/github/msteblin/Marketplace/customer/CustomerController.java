@@ -2,8 +2,6 @@ package io.github.msteblin.Marketplace.customer;
 
 import io.github.msteblin.Marketplace.customer.dto.CustomerCreationDTO;
 import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
-import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
-import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

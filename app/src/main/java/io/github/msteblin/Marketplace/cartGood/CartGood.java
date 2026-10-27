@@ -4,7 +4,8 @@ import io.github.msteblin.Marketplace.customer.Customer;
 import io.github.msteblin.Marketplace.seller.Seller;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;

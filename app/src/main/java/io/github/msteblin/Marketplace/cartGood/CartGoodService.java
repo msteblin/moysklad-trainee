@@ -3,7 +3,6 @@ package io.github.msteblin.Marketplace.cartGood;
 import io.github.msteblin.Marketplace.cartGood.dto.CartGoodCreationDTO;
 import io.github.msteblin.Marketplace.cartGood.dto.CartGoodDTO;
 import io.github.msteblin.Marketplace.customer.Customer;
-import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
 import io.github.msteblin.Marketplace.seller.Seller;
 import lombok.extern.slf4j.Slf4j;
@@ -83,5 +82,6 @@ public class CartGoodService {
     @Transactional
     public void processCartGood(CartGoodId id) {
         // TODO: submit an order
+        // deleteCartGood(id);
     }
 }
