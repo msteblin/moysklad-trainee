@@ -4,7 +4,6 @@ import io.github.msteblin.Marketplace.account.dto.AccountCreationDTO;
 import io.github.msteblin.Marketplace.account.dto.AccountDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class AccountService {
         return AccountDTO.fromAccount(savedAccount);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AccountDTO getAccount(UUID id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("account id=" + id));

@@ -1,5 +1,6 @@
 package io.github.msteblin.Marketplace.seller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.msteblin.Marketplace.account.Account;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Table(name = "sellers")
 @Getter
 @Setter
-@ToString(exclude = {"account", "msToken"})
+@ToString
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -23,10 +24,19 @@ public class Seller {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @NonNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private final Account account;
+    @JoinColumn(name = "account_id", nullable = false)
+    @ToString.Exclude
     @NonNull
-    @Column(unique = true, name = "ms_token")
+    private Account account;
+
+    @Column(name = "ms_token", nullable = false, unique = true)
+    @JsonIgnore
+    @ToString.Exclude
+    @NonNull
     private String msToken;
+
+    public Seller(UUID id) {
+        this.id = id;
+    }
 }

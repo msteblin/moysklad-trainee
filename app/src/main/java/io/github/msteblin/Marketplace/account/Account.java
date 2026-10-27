@@ -1,5 +1,6 @@
 package io.github.msteblin.Marketplace.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,6 @@ import java.util.UUID;
 @Table(name = "accounts")
 @Getter
 @Setter
-@ToString(exclude = {"hash"})
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -19,9 +19,13 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "login", nullable = false, unique = true)
     @NonNull
-    @Column(unique = true)
     private String login;
+
+    @Column(name = "hash", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
     @NonNull
     private String hash;
 
