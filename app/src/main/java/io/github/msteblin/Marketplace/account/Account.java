@@ -24,6 +24,7 @@ public class Account {
     private String login;
 
     @Column(name = "hash", nullable = false)
+    @ToString.Exclude
     @NonNull
     private String hash;
 
