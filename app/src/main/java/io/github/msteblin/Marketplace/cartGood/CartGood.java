@@ -24,19 +24,23 @@ public class CartGood {
     @MapsId("customerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "customer_id", nullable = false)
     @NonNull
     @ToString.Exclude
     private Customer customer;
 
     // TODO: cascade deletion?
     @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "seller_id", nullable = false)
     @NonNull
     @ToString.Exclude
     private Seller seller;
 
     // TODO: decide if the check constraint belongs here
-    private int quantity;
+    @Column(name = "quantity", nullable = false)
+    private int quantity = 0;
 
+    @Column(name = "added_at", nullable = false)
     @NonNull
     private OffsetDateTime addedAt = OffsetDateTime.now();
 

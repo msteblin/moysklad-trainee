@@ -19,9 +19,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "login", nullable = false, unique = true)
     @NonNull
-    @Column(unique = true)
     private String login;
+
+    @Column(name = "hash", nullable = false)
     @NonNull
     private String hash;
 

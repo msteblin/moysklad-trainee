@@ -23,10 +23,13 @@ public class Customer {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @NonNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private final Account account;
+    @JoinColumn(name = "account_id", nullable = false)
+    @ToString.Exclude
+    @NonNull
+    private Account account;
 
+    @Column(name = "name", nullable = false)
     @NonNull
     String name;
 }
