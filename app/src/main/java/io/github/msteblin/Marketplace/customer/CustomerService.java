@@ -26,7 +26,6 @@ public class CustomerService {
     // TODO: create an account automatically
     @Transactional
     public CustomerDTO createCustomer(CustomerCreationDTO customerCreationDTO) {
-        // TODO: add token encryption
         Customer customer = new Customer(new Account(customerCreationDTO.accountId()), customerCreationDTO.name());
         Customer savedCustomer = customerRepository.save(customer);
         log.debug("Seller: {}, saved seller: {}", customer, savedCustomer);
@@ -34,12 +33,11 @@ public class CustomerService {
         return CustomerDTO.fromCustomer(savedCustomer);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CustomerDTO getCustomer(UUID id) {
         // TODO: commonize
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("customer id=" + id));
-        // TODO: add request id
         log.debug("Seller: {}", customer);
         log.info("Returning customer, id={}", customer.getId());
         return CustomerDTO.fromCustomer(customer);

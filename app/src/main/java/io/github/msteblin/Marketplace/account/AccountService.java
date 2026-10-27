@@ -32,7 +32,7 @@ public class AccountService {
         return AccountDTO.fromAccount(savedAccount);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AccountDTO getAccount(UUID id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("account id=" + id));

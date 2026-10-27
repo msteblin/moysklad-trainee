@@ -1,5 +1,6 @@
 package io.github.msteblin.Marketplace.seller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.msteblin.Marketplace.account.Account;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,7 +31,12 @@ public class Seller {
     private Account account;
 
     @Column(name = "ms_token", nullable = false, unique = true)
+    @JsonIgnore
     @ToString.Exclude
     @NonNull
     private String msToken;
+
+    public Seller(UUID id) {
+        this.id = id;
+    }
 }

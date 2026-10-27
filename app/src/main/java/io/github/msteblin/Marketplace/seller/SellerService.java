@@ -37,12 +37,11 @@ public class SellerService {
         return SellerDTO.fromSeller(savedSeller);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public SellerDTO getSeller(UUID id) {
         // TODO: commonize
         Seller seller = sellerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("seller id=" + id));
-        // TODO: add request id
         log.debug("Seller: {}", seller);
         log.info("Returning seller, id={}", seller.getId());
         return SellerDTO.fromSeller(seller);

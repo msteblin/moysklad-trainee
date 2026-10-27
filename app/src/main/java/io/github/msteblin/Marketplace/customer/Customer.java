@@ -32,4 +32,8 @@ public class Customer {
     @Column(name = "name", nullable = false)
     @NonNull
     String name;
+
+    public Customer(UUID id) {
+        this.id = id;
+    }
 }

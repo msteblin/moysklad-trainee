@@ -1,35 +1,60 @@
-package io.github.msteblin.Marketplace.customer;
+package io.github.msteblin.Marketplace.cartGood;
 
-import io.github.msteblin.Marketplace.customer.dto.CustomerCreationDTO;
-import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
-import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
-import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
+import io.github.msteblin.Marketplace.cartGood.dto.CartGoodCreationDTO;
+import io.github.msteblin.Marketplace.cartGood.dto.CartGoodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customers/{customerId}/cart")
 @SuppressWarnings("unused")
-public class CustomerController {
+public class CartGoodController {
     @Autowired
-    private CustomerService customerService;
+    private CartGoodService cartGoodService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDTO createSeller(@RequestBody CustomerCreationDTO customer) {
-        return customerService.createCustomer(customer);
+    public CartGoodDTO createCartGood(
+            @RequestBody CartGoodCreationDTO cartGood,
+            @PathVariable("customerId") UUID customerId
+    ) {
+        return cartGoodService.createCartGood(cartGood, customerId, cartGood.msGoodId());
     }
 
-    @GetMapping("/{id}")
-    public CustomerDTO getCustomer(@PathVariable("id") UUID id) {
-        return customerService.getCustomer(id);
+    @GetMapping("/{goodId}")
+    public CartGoodDTO getCartGood(
+            @PathVariable("customerId") UUID customerId,
+            @PathVariable("goodId") UUID goodId
+    ) {
+        return cartGoodService.getCartGood(customerId, goodId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCustomer(@PathVariable("id") UUID id) {
-        customerService.deleteCustomer(id);
+    @GetMapping
+    public List<CartGoodDTO> getCustomerCartGoods(
+            @PathVariable("customerId") UUID customerId
+    ) {
+        return cartGoodService.getCustomerCartGoods(customerId);
+    }
+
+    @DeleteMapping("/{goodId}")
+    public void deleteCustomer(
+            @PathVariable("customerId") UUID customerId,
+            @PathVariable("goodId") UUID goodId
+    ) {
+        cartGoodService.deleteCartGood(customerId, goodId);
+    }
+
+    @PostMapping("/{goodId}")
+    @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
+    // @ResponseStatus(HttpStatus.CREATED)
+    public void processCartGood(
+            @PathVariable("customerId") UUID customerId,
+            @PathVariable("goodId") UUID goodId
+    ) {
+        cartGoodService.processCartGood(customerId, goodId);
     }
 }

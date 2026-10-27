@@ -1,13 +1,11 @@
-package io.github.msteblin.Marketplace.customer;
+package io.github.msteblin.Marketplace.cartGood;
 
-import io.github.msteblin.Marketplace.account.Account;
-import io.github.msteblin.Marketplace.customer.dto.CustomerCreationDTO;
+import io.github.msteblin.Marketplace.cartGood.dto.CartGoodCreationDTO;
+import io.github.msteblin.Marketplace.cartGood.dto.CartGoodDTO;
+import io.github.msteblin.Marketplace.customer.Customer;
 import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
 import io.github.msteblin.Marketplace.seller.Seller;
-import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
-import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
-import io.github.msteblin.MoySkladAPI.types.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,36 +16,72 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class CustomerService {
+public class CartGoodService {
     @Autowired
     @SuppressWarnings("unused")
-    private CustomerRepository customerRepository;
+    private CartGoodRepository cartGoodRepository;
 
-    // TODO: create an account automatically
     @Transactional
-    public CustomerDTO createCustomer(CustomerCreationDTO customerCreationDTO) {
-        // TODO: add token encryption
-        Customer customer = new Customer(new Account(customerCreationDTO.accountId()), customerCreationDTO.name());
-        Customer savedCustomer = customerRepository.save(customer);
-        log.debug("Seller: {}, saved seller: {}", customer, savedCustomer);
-        log.info("Created seller, id={}", savedCustomer.getId());
-        return CustomerDTO.fromCustomer(savedCustomer);
+    public CartGoodDTO createCartGood(CartGoodCreationDTO dto, UUID customerId, UUID msGoodId) {
+        return createCartGood(dto, new CartGoodId(customerId, msGoodId));
     }
 
     @Transactional
-    public CustomerDTO getCustomer(UUID id) {
+    public CartGoodDTO createCartGood(CartGoodCreationDTO dto, CartGoodId id) {
+        CartGood cartGood = new CartGood(
+                new Customer(id.getCustomerId()),
+                id.getMsGoodId(),
+                new Seller(dto.sellerId()),
+                dto.quantity()
+        );
+        CartGood savedCartGood = cartGoodRepository.save(cartGood);
+        log.debug("Cart good: {}, saved cart good: {}", cartGood, savedCartGood);
+        log.info("Created cart good, id={}", savedCartGood.getId());
+        return CartGoodDTO.fromCartGood(savedCartGood);
+    }
+
+    @Transactional(readOnly = true)
+    public CartGoodDTO getCartGood(UUID customerId, UUID msGoodId) {
+        return getCartGood(new CartGoodId(customerId, msGoodId));
+    }
+
+    @Transactional(readOnly = true)
+    public CartGoodDTO getCartGood(CartGoodId id) {
         // TODO: commonize
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("customer id=" + id));
-        // TODO: add request id
-        log.debug("Seller: {}", customer);
-        log.info("Returning customer, id={}", customer.getId());
-        return CustomerDTO.fromCustomer(customer);
+        CartGood cartGood = cartGoodRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("cart good id=" + id));
+        log.debug("Cart good: {}", cartGood);
+        log.info("Returning cart good, id={}", cartGood.getId());
+        return CartGoodDTO.fromCartGood(cartGood);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartGoodDTO> getCustomerCartGoods(UUID customerId) {
+        List<CartGood> cartGoods = cartGoodRepository.findAllByCustomerId(customerId);
+        log.debug("Cart goods: {}", cartGoods);
+        log.info("Returning {} cart goods", cartGoods.size());
+        return cartGoods.stream().map(CartGoodDTO::fromCartGood).toList();
     }
 
     @Transactional
-    public void deleteCustomer(UUID id) {
-        log.info("Deleting customer, id={}", id);
-        customerRepository.deleteById(id);
+    public void deleteCartGood(UUID customerId, UUID msGoodId) {
+        deleteCartGood(new CartGoodId(customerId, msGoodId));
+    }
+
+    @Transactional
+    public void deleteCartGood(CartGoodId id) {
+        log.info("Deleting cart good, id={}", id);
+        cartGoodRepository.deleteById(id);
+    }
+
+    // TODO: implement
+    @Transactional
+    public void processCartGood(UUID customerId, UUID msGoodId) {
+        processCartGood(new CartGoodId(customerId, msGoodId));
+    }
+
+    @Transactional
+    public void processCartGood(CartGoodId id) {
+        // TODO: submit an order
     }
 }
