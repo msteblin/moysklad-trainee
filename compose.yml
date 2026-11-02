@@ -20,8 +20,26 @@ services:
       - db
     volumes:
       - logs:/var/log/moysklad-trainee
+    hostname: app
     build: .
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    depends_on:
+      - app
+    volumes:
+      - prometheus:/prometheus
+    configs:
+      - source: prometheus
+        target: /etc/prometheus/prometheus.yml
 
 volumes:
   db:
   logs:
+  prometheus:
+
+configs:
+  prometheus:
+    file: prometheus.yml
