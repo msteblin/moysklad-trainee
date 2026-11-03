@@ -4,7 +4,7 @@ import io.github.msteblin.Marketplace.seller.Seller;
 import io.github.msteblin.Marketplace.seller.SellerRepository;
 import io.github.msteblin.Marketplace.seller.SellerService;
 import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -14,23 +14,22 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Testcontainers
 @SuppressWarnings("unused")
 public class SellerServiceIntegrationTest {
+    @Container
+    @ServiceConnection
+    // TODO: decide if postgres:18-alpine is more appropriate
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18");
     @Autowired
     SellerRepository sellerRepository;
     @Autowired
     AccountRepository accountRepository;
     @Autowired
     SellerService sellerService;
-
-    @Container
-    @ServiceConnection
-    // TODO: decide if postgres:18-alpine is more appropriate
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18");
 
     @Test
     public void createSeller() {

@@ -6,6 +6,7 @@ import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
 import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
 import io.github.msteblin.MoySkladAPI.APIClient;
 import io.github.msteblin.MoySkladAPI.types.Product;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class SellerService {
 
     // TODO: create an account automatically
     @Transactional
+    @Timed(value = "seller.create.time")
     public SellerDTO createSeller(SellerCreationDTO sellerCreationDTO) {
         // TODO: add token encryption
         Seller seller = new Seller(new Account(sellerCreationDTO.accountId()), sellerCreationDTO.msToken());

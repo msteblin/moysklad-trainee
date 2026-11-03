@@ -4,6 +4,7 @@ import io.github.msteblin.Marketplace.account.Account;
 import io.github.msteblin.Marketplace.customer.dto.CustomerCreationDTO;
 import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class CustomerService {
 
     // TODO: create an account automatically
     @Transactional
+    @Timed(value = "customer.create.time")
     public CustomerDTO createCustomer(CustomerCreationDTO customerCreationDTO) {
         Customer customer = new Customer(new Account(customerCreationDTO.accountId()), customerCreationDTO.name());
         Customer savedCustomer = customerRepository.save(customer);
