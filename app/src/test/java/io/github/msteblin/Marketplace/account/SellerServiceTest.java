@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,8 +19,6 @@ import static org.mockito.Mockito.*;
 public class SellerServiceTest {
     @Mock
     SellerRepository sellerRepository;
-    @Mock
-    AccountRepository accountRepository;
     @InjectMocks
     SellerService sellerService;
 

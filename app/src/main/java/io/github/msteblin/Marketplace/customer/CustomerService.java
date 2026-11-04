@@ -4,7 +4,9 @@ import io.github.msteblin.Marketplace.account.Account;
 import io.github.msteblin.Marketplace.customer.dto.CustomerCreationDTO;
 import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
+import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +16,15 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CustomerService {
     @Autowired
     @SuppressWarnings("unused")
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     // TODO: create an account automatically
     @Transactional
-    @Timed(value = "customer.create.time")
+    @Counted(value = "customer.create.count")
     public CustomerDTO createCustomer(CustomerCreationDTO customerCreationDTO) {
         Customer customer = new Customer(new Account(customerCreationDTO.accountId()), customerCreationDTO.name());
         Customer savedCustomer = customerRepository.save(customer);
