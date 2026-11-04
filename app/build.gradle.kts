@@ -1,6 +1,6 @@
 plugins {
     id("buildlogic.java-application-conventions")
-    id("org.springframework.boot") version "4.1.1"
+    id("org.springframework.boot") version "4.1.2"
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -11,9 +11,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
+    implementation("org.springframework.boot:spring-boot-starter-aspectj")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.bouncycastle:bcprov-jdk18on:1.86")
     implementation("org.springframework.security:spring-security-crypto")
+
+    implementation(platform("io.micrometer:micrometer-bom:1.17.2"))
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")

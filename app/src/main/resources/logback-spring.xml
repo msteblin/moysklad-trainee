@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{requestId}] %logger{36} - %msg%n" />
-    <property name="LOG_DIR" value="/var/log/moysklad-trainee" />
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{requestId}] %logger{36} - %msg%n"/>
+    <property name="LOG_DIR" value="/var/log/moysklad-trainee"/>
 
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -24,14 +25,14 @@
 
     <springProfile name="dev">
         <root level="debug">
-            <appender-ref ref="Console" />
+            <appender-ref ref="Console"/>
         </root>
     </springProfile>
 
     <springProfile name="prod">
         <root level="info">
-            <appender-ref ref="RollingFile" />
-            <appender-ref ref="Console" />
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="Console"/>
         </root>
     </springProfile>
 </configuration>

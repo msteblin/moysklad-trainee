@@ -20,7 +20,8 @@ public class ProductAPI {
         Rows<Product> rows = core.restClient.get().uri("/entity/product")
                 .headers(h -> h.setBearerAuth(core.msToken))
                 .retrieve()
-                .body(new ParameterizedTypeReference<Rows<Product>>() {});
+                .body(new ParameterizedTypeReference<Rows<Product>>() {
+                });
         // TODO: convert to exception
         assert rows != null;
         log.debug("Rows: {}", rows);
@@ -31,6 +32,7 @@ public class ProductAPI {
         return core.restClient.get().uri("/entity/product/" + id.toString())
                 .headers(h -> h.setBearerAuth(core.msToken))
                 .retrieve()
-                .body(new ParameterizedTypeReference<Product>() {});
+                .body(new ParameterizedTypeReference<Product>() {
+                });
     }
 }

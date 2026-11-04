@@ -5,6 +5,8 @@ import io.github.msteblin.Marketplace.cartGood.dto.CartGoodDTO;
 import io.github.msteblin.Marketplace.customer.Customer;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
 import io.github.msteblin.Marketplace.seller.Seller;
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,15 @@ public class CartGoodService {
     private CartGoodRepository cartGoodRepository;
 
     @Transactional
+    @Timed(value = "cartGood.create.time")
+    @Counted(value = "cartGood.create.count")
     public CartGoodDTO createCartGood(CartGoodCreationDTO dto, UUID customerId, UUID msGoodId) {
         return createCartGood(dto, new CartGoodId(customerId, msGoodId));
     }
 
     @Transactional
+    @Timed(value = "cartGood.create.time")
+    @Counted(value = "cartGood.create.count")
     public CartGoodDTO createCartGood(CartGoodCreationDTO dto, CartGoodId id) {
         CartGood cartGood = new CartGood(
                 new Customer(id.getCustomerId()),
@@ -75,11 +81,15 @@ public class CartGoodService {
 
     // TODO: implement
     @Transactional
+    @Timed(value = "cartGood.process.time")
+    @Counted(value = "cartGood.process.count")
     public void processCartGood(UUID customerId, UUID msGoodId) {
         processCartGood(new CartGoodId(customerId, msGoodId));
     }
 
     @Transactional
+    @Timed(value = "cartGood.process.time")
+    @Counted(value = "cartGood.process.count")
     public void processCartGood(CartGoodId id) {
         // TODO: submit an order
         // deleteCartGood(id);

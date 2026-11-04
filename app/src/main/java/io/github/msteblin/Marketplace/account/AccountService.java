@@ -3,6 +3,9 @@ package io.github.msteblin.Marketplace.account;
 import io.github.msteblin.Marketplace.account.dto.AccountCreationDTO;
 import io.github.msteblin.Marketplace.account.dto.AccountDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,16 +16,19 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AccountService {
     @Autowired
     @SuppressWarnings("unused")
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
     @SuppressWarnings("unused")
     private PasswordEncoder passwordEncoder;
 
     @Transactional
+    @Timed(value = "account.create.time")
+    @Counted(value = "account.create.count")
     public AccountDTO createAccount(AccountCreationDTO accountCreationDTO) {
         Account account = new Account(accountCreationDTO.login(), passwordEncoder.encode(accountCreationDTO.password()));
         Account savedAccount = accountRepository.save(account);
