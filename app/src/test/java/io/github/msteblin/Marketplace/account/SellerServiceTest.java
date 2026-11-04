@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -19,6 +21,8 @@ import static org.mockito.Mockito.*;
 public class SellerServiceTest {
     @Mock
     SellerRepository sellerRepository;
+    @Mock
+    AccountRepository accountRepository;
     @InjectMocks
     SellerService sellerService;
 
@@ -27,6 +31,7 @@ public class SellerServiceTest {
         final String token = "token";
         final Account account = mock(Account.class);
 
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
         when(sellerRepository.save(any(Seller.class))).thenAnswer(i -> i.getArgument(0));
 
         sellerService.createSeller(new SellerCreationDTO(account.getId(), token));

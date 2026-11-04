@@ -1,6 +1,7 @@
 package io.github.msteblin.Marketplace.seller;
 
 import io.github.msteblin.Marketplace.account.Account;
+import io.github.msteblin.Marketplace.account.AccountRepository;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
 import io.github.msteblin.Marketplace.seller.dto.SellerCreationDTO;
 import io.github.msteblin.Marketplace.seller.dto.SellerDTO;
@@ -23,20 +24,24 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SellerService {
     @Autowired
-    @SuppressWarnings("unused")
     private final SellerRepository sellerRepository;
+
+    @Autowired
+    private final AccountRepository accountRepository;
 
     @Autowired
     @SuppressWarnings("unused")
     private ObjectProvider<APIClient> apiProvider;
 
-    // TODO: create an account automatically
     @Transactional
     @Timed(value = "seller.create.time")
     @Counted(value = "seller.create.count")
     public SellerDTO createSeller(SellerCreationDTO sellerCreationDTO) {
+        // TODO: call AccountService.getAccount instead?
+        Account account = accountRepository.findById(sellerCreationDTO.accountId())
+                .orElseThrow(() -> new NotFoundException("account id=" + sellerCreationDTO.accountId()));
         // TODO: add token encryption
-        Seller seller = new Seller(new Account(sellerCreationDTO.accountId()), sellerCreationDTO.msToken());
+        Seller seller = new Seller(account, sellerCreationDTO.msToken());
         Seller savedSeller = sellerRepository.save(seller);
         log.debug("Seller: {}, saved seller: {}", seller, savedSeller);
         log.info("Created seller, id={}", savedSeller.getId());
