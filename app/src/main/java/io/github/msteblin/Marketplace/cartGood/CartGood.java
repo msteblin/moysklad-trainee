@@ -45,7 +45,7 @@ public class CartGood {
     @NonNull
     private OffsetDateTime addedAt = OffsetDateTime.now();
 
-    public CartGood(Customer customer, UUID msGoodId, Seller seller, int quantity) {
+    public CartGood(Customer customer, UUID msGoodId, @NonNull Seller seller, int quantity) {
         this.customer = customer;
         this.seller = seller;
         this.quantity = quantity;

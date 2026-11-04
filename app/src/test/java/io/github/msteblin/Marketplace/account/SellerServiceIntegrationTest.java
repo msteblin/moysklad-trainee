@@ -23,7 +23,7 @@ public class SellerServiceIntegrationTest {
     @Container
     @ServiceConnection
     // TODO: decide if postgres:18-alpine is more appropriate
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18-alpine");
     @Autowired
     SellerRepository sellerRepository;
     @Autowired
@@ -37,16 +37,16 @@ public class SellerServiceIntegrationTest {
         Account account = new Account();
         account.setLogin("test");
         account.setHash("test");
-        account = accountRepository.saveAndFlush(account);
+        Account savedAccount = accountRepository.saveAndFlush(account);
 
-        sellerService.createSeller(new SellerCreationDTO(account.getId(), token));
+        sellerService.createSeller(new SellerCreationDTO(savedAccount.getId(), token));
 
         List<Seller> sellers = sellerRepository.findAll();
         assertThat(sellers).hasSize(1);
 
         Seller seller = sellers.getFirst();
         assertThat(seller.getId()).isNotNull();
-        assertThat(seller.getAccount().getId()).isEqualTo(account.getId());
+        assertThat(seller.getAccount().getId()).isEqualTo(savedAccount.getId());
         assertThat(seller.getMsToken()).isEqualTo(token);
     }
 }

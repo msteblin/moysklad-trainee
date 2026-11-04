@@ -5,7 +5,6 @@ import io.github.msteblin.Marketplace.customer.dto.CustomerCreationDTO;
 import io.github.msteblin.Marketplace.customer.dto.CustomerDTO;
 import io.github.msteblin.Marketplace.exception.NotFoundException;
 import io.micrometer.core.annotation.Counted;
-import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
