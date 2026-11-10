@@ -3,7 +3,7 @@ groups:
     interval: 15s
     rules:
       - alert: applicationDown
-        expr: up{job="prometheus"} == 0
+        expr: up{job="moysklad-trainee-app"} == 0
         for: 1m
         labels:
           severity: critical
@@ -24,8 +24,8 @@ groups:
           description: Доля ошибок HTTP 5XX превысила порог в 5% за последние 5 минут.
       - alert: dbPoolExhaustion
         expr: |
-          hikaricp_connections_active{job="prometheus", pool="pool"} /
-          hikaricp_connections_max{job="prometheus", pool="pool"}
+          hikaricp_connections_active{job="moysklad-trainee-app", pool="pool"} /
+          hikaricp_connections_max{job="moysklad-trainee-app", pool="pool"}
           > 0.9
         for: 5m
         labels:
