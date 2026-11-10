@@ -33,7 +33,7 @@ services:
       - prometheus:/prometheus
     configs:
       - source: prometheus
-        target: /etc/prometheus/prometheus.yml
+        target: /etc/prometheus/
 
 volumes:
   db:
@@ -42,4 +42,4 @@ volumes:
 
 configs:
   prometheus:
-    file: prometheus.yml
+    file: prometheus/
