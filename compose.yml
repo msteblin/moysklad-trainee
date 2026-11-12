@@ -33,7 +33,9 @@ services:
       - prometheus:/prometheus
     configs:
       - source: prometheus
-        target: /etc/prometheus/
+        target: /etc/prometheus/prometheus.yml
+      - source: prometheus-alert-rules
+        target: /etc/prometheus/alert.rules.yml
 
 volumes:
   db:
@@ -42,4 +44,6 @@ volumes:
 
 configs:
   prometheus:
-    file: prometheus/
+    file: prometheus/prometheus.yml
+  prometheus-alert-rules:
+    file: prometheus/alert.rules.yml
