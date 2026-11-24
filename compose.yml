@@ -15,13 +15,25 @@ services:
     restart: on-failure
     env_file: .env
     ports:
-      - 8080:8080
+      - 8080
+    deploy:
+      replicas: 2
     depends_on:
       - db
     volumes:
       - logs:/var/log/moysklad-trainee
     hostname: app
     build: .
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    depends_on:
+      - app
+    configs:
+      - source: caddy
+        target: /etc/caddy/Caddyfile
   prometheus:
     image: prom/prometheus
     restart: unless-stopped
@@ -95,6 +107,8 @@ volumes:
   alloy:
 
 configs:
+  caddy:
+    file: config/Caddyfile
   prometheus:
     file: config/prometheus/prometheus.yml
   prometheus-alert-rules:
