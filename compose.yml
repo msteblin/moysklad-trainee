@@ -22,7 +22,6 @@ services:
       - db
     volumes:
       - logs:/var/log/moysklad-trainee
-    hostname: app
     build: .
   proxy:
     image: caddy:2
