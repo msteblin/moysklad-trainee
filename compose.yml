@@ -9,7 +9,6 @@ services:
       - 5432:5432
     volumes:
       - db:/var/lib/postgresql
-    hostname: db
   app:
     image: moysklad-trainee-app
     restart: on-failure
@@ -47,7 +46,6 @@ services:
         target: /etc/prometheus/prometheus.yml
       - source: prometheus-alert-rules
         target: /etc/prometheus/alert.rules.yml
-    hostname: prometheus
   grafana:
     image: grafana/grafana
     restart: unless-stopped
@@ -76,7 +74,6 @@ services:
     configs:
       - source: loki
         target: /etc/loki/config.yml
-    hostname: loki
   alloy:
     image: grafana/alloy
     command:
