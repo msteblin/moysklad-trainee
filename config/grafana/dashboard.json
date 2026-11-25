@@ -2,20 +2,20 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adhdzhw",
+    "name": "ad8wctd",
     "namespace": "default",
-    "uid": "392ee86b-ab7d-4b47-a9f2-e5db89898b60",
-    "resourceVersion": "1795031334328991",
-    "generation": 28,
-    "creationTimestamp": "2026-11-17T22:45:35Z",
+    "uid": "34c9c522-ee99-4b14-9b8f-b4d5c14a91e0",
+    "resourceVersion": "1795644845223002",
+    "generation": 25,
+    "creationTimestamp": "2026-11-25T15:13:52Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "1628069957300224"
+      "grafana.app/deprecatedInternalID": "4413494241107968"
     },
     "annotations": {
       "grafana.app/createdBy": "user:bg4elg6yq02rkc",
       "grafana.app/saved-from-ui": "Grafana v13.3.1 (da3aa3ff57)",
       "grafana.app/updatedBy": "user:bg4elg6yq02rkc",
-      "grafana.app/updatedTimestamp": "2026-11-18T19:48:54Z"
+      "grafana.app/updatedTimestamp": "2026-11-25T22:14:05Z"
     }
   },
   "spec": {
@@ -67,7 +67,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "up{job=\"moysklad-trainee-app\"}",
+                        "expr": "up{job=\"moysklad-trainee-app\"}\n* on(instance) group_left(exported_instance)\njvm_info{job=\"moysklad-trainee-app\", exported_instance=~\"$instance\"}",
                         "format": "time_series",
                         "instant": false,
                         "legendFormat": "__auto",
@@ -172,9 +172,9 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(rate(http_server_requests_seconds_count[1m]))",
+                        "expr": "sum by (exported_instance) (rate(http_server_requests_seconds_count{exported_instance=~\"$instance\"}[1m]))",
                         "interval": "",
-                        "legendFormat": "Запросы в секунду",
+                        "legendFormat": "Запросы в секунду ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -194,9 +194,10 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(rate(http_server_requests_seconds_count{status=~\"5..\"}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count[5m])), 0.001)",
+                        "exemplar": false,
+                        "expr": "sum by (exported_instance) (rate(http_server_requests_seconds_count{status=~\"5..\", exported_instance=~\"$instance\"}[5m]))\n/\nclamp_min(sum by (exported_instance) (rate(http_server_requests_seconds_count{exported_instance=~\"$instance\"}[5m])), 0.001)",
                         "instant": false,
-                        "legendFormat": "Доля ошибок HTTP 5XX",
+                        "legendFormat": "Доля ошибок HTTP 5XX ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -310,8 +311,8 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "histogram_quantile(0.50, sum by (le) (rate(http_server_requests_seconds_bucket[1m])))",
-                        "legendFormat": "p50",
+                        "expr": "histogram_quantile(0.50, sum by (exported_instance, le) (rate(http_server_requests_seconds_bucket{exported_instance=~\"$instance\"}[1m])))",
+                        "legendFormat": "p50 ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -331,9 +332,9 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket[1m])))",
+                        "expr": "histogram_quantile(0.95, sum by (exported_instance, le) (rate(http_server_requests_seconds_bucket{exported_instance=~\"$instance\"}[1m])))",
                         "instant": false,
-                        "legendFormat": "p95",
+                        "legendFormat": "p95 ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -447,8 +448,8 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "hikaricp_connections_active",
-                        "legendFormat": "Активные",
+                        "expr": "hikaricp_connections_active{exported_instance=~\"$instance\"}",
+                        "legendFormat": "Активные ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -468,9 +469,9 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "hikaricp_connections_idle",
+                        "expr": "hikaricp_connections_idle{exported_instance=~\"$instance\"}",
                         "instant": false,
-                        "legendFormat": "Бездействующие",
+                        "legendFormat": "Бездействующие ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -490,9 +491,9 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "hikaricp_connections_pending",
+                        "expr": "hikaricp_connections_pending{exported_instance=~\"$instance\"}",
                         "instant": false,
-                        "legendFormat": "Ожидающие",
+                        "legendFormat": "Ожидающие ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -603,10 +604,10 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum by (entity, operation, exception) (rate(moysklad_trainee_operation_seconds_count[1m]))",
+                        "expr": "sum by (exported_instance, entity, operation, exception) (rate(moysklad_trainee_operation_seconds_count{exported_instance=~\"$instance\"}[1m]))",
                         "format": "time_series",
                         "instant": false,
-                        "legendFormat": "{{entity}}.{{operation}}",
+                        "legendFormat": "{{entity}}.{{operation}} ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -715,8 +716,8 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (entity, operation) (rate(moysklad_trainee_operation_seconds_sum[1m])) / clamp_min(sum by (entity, operation) (rate(moysklad_trainee_operation_seconds_count[1m])), 1e-9)",
-                        "legendFormat": "{{entity}}.{{operation}}",
+                        "expr": "sum by (exported_instance, entity, operation) (rate(moysklad_trainee_operation_seconds_sum{exported_instance=~\"$instance\"}[1m])) / clamp_min(sum by (exported_instance, entity, operation) (rate(moysklad_trainee_operation_seconds_count{exported_instance=~\"$instance\"}[1m])), 1e-9)",
+                        "legendFormat": "{{entity}}.{{operation}} ({{exported_instance}})",
                         "range": true
                       }
                     },
@@ -829,8 +830,8 @@
                       },
                       "spec": {
                         "direction": "backward",
-                        "editorMode": "builder",
-                        "expr": "{service_name=\"moysklad-trainee\", level=~\"$loki_level\"} | json | requestId =~ `.*$loki_request_id.*`",
+                        "editorMode": "code",
+                        "expr": "{app=\"moysklad-trainee\", level=~\"${loki_level:regex}\", filename=~\".*(${instance:regex}).*\"} | json | requestId =~ `.*$loki_request_id.*`",
                         "queryType": "range"
                       }
                     },
@@ -1020,7 +1021,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "New dashboard",
+    "title": "New dashboard Copy",
     "variables": [
       {
         "kind": "TextVariable",
@@ -1042,8 +1043,12 @@
           "name": "loki_level",
           "query": "INFO, WARN, ERROR, DEBUG, TRACE",
           "current": {
-            "text": "INFO",
-            "value": "INFO"
+            "text": [
+              "INFO"
+            ],
+            "value": [
+              "INFO"
+            ]
           },
           "options": [],
           "multi": true,
@@ -1053,6 +1058,58 @@
           "skipUrlSync": false,
           "allowCustomValue": true,
           "valuesFormat": "csv"
+        }
+      },
+      {
+        "kind": "AdhocVariable",
+        "group": "prometheus",
+        "datasource": {
+          "name": "prometheus"
+        },
+        "spec": {
+          "name": "filter0",
+          "baseFilters": [],
+          "filters": [],
+          "defaultKeys": [],
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true,
+          "enableGroupBy": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "instance",
+          "current": {
+            "text": "d8f9676e1d6f",
+            "value": "d8f9676e1d6f"
+          },
+          "label": "Экземпляр",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "prometheus"
+            },
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(exported_instance)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(exported_instance)",
+          "options": [],
+          "multi": true,
+          "includeAll": false,
+          "allowCustomValue": true
         }
       }
     ],

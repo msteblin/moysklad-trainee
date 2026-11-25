@@ -24,7 +24,7 @@
     </appender>
 
     <appender name="JsonFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/application.json.log</file>
+        <file>${LOG_DIR}/application.${HOSTNAME}.json.log</file>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <timestamp>

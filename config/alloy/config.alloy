@@ -1,7 +1,7 @@
 local.file_match "app_logs" {
   path_targets = [
     {
-      "__path__" = "/var/log/moysklad-trainee/application.json.log",
+      "__path__" = "/var/log/moysklad-trainee/application.*.json.log",
       "app"      = "moysklad-trainee",
       "env"      = "local",
     },
