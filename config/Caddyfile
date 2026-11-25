@@ -1,0 +1,8 @@
+:8080 {
+	reverse_proxy {
+		dynamic a app 8080
+		health_uri /actuator/health
+		health_interval 10s
+		health_timeout 3s
+	}
+}

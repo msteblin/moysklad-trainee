@@ -9,19 +9,29 @@ services:
       - 5432:5432
     volumes:
       - db:/var/lib/postgresql
-    hostname: db
   app:
     image: moysklad-trainee-app
     restart: on-failure
     env_file: .env
     ports:
-      - 8080:8080
+      - 8080
+    deploy:
+      replicas: 2
     depends_on:
       - db
     volumes:
       - logs:/var/log/moysklad-trainee
-    hostname: app
     build: .
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    depends_on:
+      - app
+    configs:
+      - source: caddy
+        target: /etc/caddy/Caddyfile
   prometheus:
     image: prom/prometheus
     restart: unless-stopped
@@ -36,7 +46,6 @@ services:
         target: /etc/prometheus/prometheus.yml
       - source: prometheus-alert-rules
         target: /etc/prometheus/alert.rules.yml
-    hostname: prometheus
   grafana:
     image: grafana/grafana
     restart: unless-stopped
@@ -65,7 +74,6 @@ services:
     configs:
       - source: loki
         target: /etc/loki/config.yml
-    hostname: loki
   alloy:
     image: grafana/alloy
     command:
@@ -95,6 +103,8 @@ volumes:
   alloy:
 
 configs:
+  caddy:
+    file: config/Caddyfile
   prometheus:
     file: config/prometheus/prometheus.yml
   prometheus-alert-rules:
